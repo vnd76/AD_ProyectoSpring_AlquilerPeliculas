@@ -565,8 +565,9 @@ public class Menu implements CommandLineRunner {
         System.out.println("  1. Ver todos los alquileres");
         System.out.println("  2. Ver alquileres activos");
         System.out.println("  3. Ver alquileres por suscriptor");
-        System.out.println("  4. Eliminar alquiler");
-        System.out.println("  5. Volver al menú principal");
+        System.out.println("  4. Crear nuevo alquiler (asociar productos)");  // NUEVA OPCIÓN
+        System.out.println("  5. Eliminar alquiler");
+        System.out.println("  6. Volver al menú principal");
         System.out.println("════════════════════════════════════════════════════════");
         System.out.print("Elige una opción: ");
 
@@ -576,7 +577,8 @@ public class Menu implements CommandLineRunner {
             case 1 -> listarAlquileres();
             case 2 -> listarAlquileresActivos();
             case 3 -> listarAlquileresPorSuscriptor();
-            case 4 -> eliminarAlquiler();
+            case 4 -> crearAlquilerConProductos();
+            case 5 -> eliminarAlquiler();
         }
     }
 
@@ -655,6 +657,71 @@ public class Menu implements CommandLineRunner {
                 () -> System.out.println("Suscriptor no encontrado.")
         );
         System.out.println();
+    }
+    private void crearAlquilerConProductos() {
+        System.out.println("=== CREAR NUEVO ALQUILER ===");
+
+        System.out.print("Ingresa el ID del suscriptor: ");
+        long suscriptorId = leerOpcionLong();
+
+        suscriptorRepository.findById(suscriptorId).ifPresentOrElse(
+                suscriptor -> {
+                    System.out.println("Suscriptor: " + suscriptor.getCorreoElectronico());
+                    System.out.println("Plan: " + suscriptor.getPlanContratado());
+                    int dias = suscriptor.getPlanContratado() == Suscriptor.PlanContratado.PREMIUM ? 28 : 14;
+                    System.out.printf("Duración del alquiler: %d días%n", dias);
+
+                    System.out.println("=== PRODUCTOS DISPONIBLES ===");
+                    List<Producto> productosDisponibles = productoRepository.findAll().stream()
+                            .filter(p -> p.getAlquiler() == null)
+                            .toList();
+
+                    if (productosDisponibles.isEmpty()) {
+                        System.out.println("No hay productos disponibles para alquilar.");
+                        return;
+                    }
+
+                    for (Producto p : productosDisponibles) {
+                        System.out.printf("ID: %d - %s (%s)%n",
+                                p.getId(), p.getTitulo(), p.getTipoProducto());
+                    }
+
+                    System.out.print("Ingresa el ID del producto que deseas alquilar: ");
+                    long productoId = leerOpcionLong();
+
+                    // 4. Validar que el producto existe y está disponible
+                    Producto producto = productoRepository.findById(productoId).orElse(null);
+
+                    if (producto == null) {
+                        System.out.println("Producto no encontrado.");
+                        return;
+                    }
+
+                    if (producto.getAlquiler() != null) {
+                        System.out.println("Este producto ya está alquilado.");
+                        return;
+                    }
+
+                    Alquiler alquiler = new Alquiler();
+                    alquiler.setSuscriptor(suscriptor);
+                    alquiler.setFechaInicio(LocalDate.now());
+                    alquiler.calcularFechaFin();
+
+                    Alquiler alquilerGuardado = alquilerRepository.save(alquiler);
+
+                    producto.setAlquiler(alquilerGuardado);
+                    productoRepository.save(producto);
+
+                    System.out.println("Alquiler creado exitosamente");
+                    System.out.println("-------------------------------------------");
+                    System.out.printf("ID Alquiler: %d%n", alquilerGuardado.getId());
+                    System.out.printf("Producto: %s%n", producto.getTitulo());
+                    System.out.printf("Fecha inicio: %s%n", alquilerGuardado.getFechaInicio().format(formatter));
+                    System.out.printf("Fecha fin: %s%n", alquilerGuardado.getFechaFin().format(formatter));
+                    System.out.println("-------------------------------------------");
+                },
+                () -> System.out.println("Suscriptor no encontrado.")
+        );
     }
 
     private void eliminarAlquiler() {
