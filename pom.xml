@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>4.0.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from com.sqt.ad_proyectospring_alquilerpeliculas.repository -->
     </parent>
     <groupId>com.sqt</groupId>
     <artifactId>AD_ProyectoSpring_AlquilerPeliculas</artifactId>
@@ -55,11 +55,14 @@
             <scope>runtime</scope>
         </dependency>
 
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version> <optional>true</optional>
+            <version>1.18.32</version>
+            <scope>provided</scope>
         </dependency>
+
 
         <dependency>
             <groupId>org.mapstruct</groupId>
