@@ -221,6 +221,12 @@ Al inicializar datos (opción 1 del menú), se crean:
 
 ---
 
+## VÍDEO CON DEMOSTRACIÓN DE PRUEBA EN POSTMAN
+
+Breve prueba del funcionamiento de la API, se enfoca en la entidad de suscriptores
+
+https://youtu.be/eKGmRkYIQOI
+
 ## Tecnologías Utilizadas
 - Java 17
 -  Maven
