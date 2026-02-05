@@ -8,45 +8,41 @@ El sistema implementa una arquitectura en capas con API REST, validaciones de ne
 ---
 
 ## Diagrama Entidad-Relación
+erDiagram
+    CATEGORIA ||--o{ PRODUCTO : tiene
+    IDIOMA ||--o{ PRODUCTO : "está en"
+    PRODUCTO }o--|| ALQUILER : "incluido en"
+    SUSCRIPTOR ||--o{ ALQUILER : realiza
 
-┌─────────────────┐
-│   Categoria     │
-│                 │
-└────────┬────────┘
-         │
-         │ *
-         │
-         │ ManyToMany
-         │
-         │ *
-         ├─────────────────┐
-         │                 │
-┌────────┴────────┐   ┌────┴────────┐
-│     Idioma      │   │  Producto   │
-│                 │   │             │
-└─────────────────┘   └──────┬──────┘
-                             │
-                             │ *
-                             │
-                             │ ManyToOne
-                             │ (opcional)
-                             │
-                             │ 0..1
-                             ▼
-                      ┌──────────────┐
-                      │   Alquiler   │
-                      │              │
-                      └──────┬───────┘
-                             ▲
-                             │ *
-                             │
-                             │ ManyToOne
-                             │
-                             │ 1
-                      ┌──────┴───────┐
-                      │  Suscriptor  │
-                      │              │
-                      └──────────────┘
+    CATEGORIA {
+        int id PK
+        string nombre
+    }
+    
+    IDIOMA {
+        int id PK
+        string codigo
+        string nombre
+    }
+    
+    PRODUCTO {
+        int id PK
+        string titulo
+        string tipo
+    }
+    
+    ALQUILER {
+        int id PK
+        date fecha_inicio
+        date fecha_fin
+        int suscriptor_id FK
+    }
+    
+    SUSCRIPTOR {
+        int id PK
+        string nombre
+        string email
+    }
 
 ---
 
