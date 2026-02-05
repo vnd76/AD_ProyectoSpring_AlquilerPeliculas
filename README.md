@@ -7,81 +7,30 @@ El sistema implementa una arquitectura en capas con API REST, validaciones de ne
 
 ---
 
-## Diagrama Entidad-Relación
-
-┌─────────────┐
-│  Categoria  │
-│─────────────│
-│ id (PK)     │
-│ nombre      │
-└──────┬──────┘
-       │
-       │ producto_categoria
-       │ (ManyToMany)
-       │
-┌──────▼──────┐        ┌─────────────┐
-│   Producto  │◄───────┤   Idioma    │
-│─────────────│        │─────────────│
-│ id (PK)     │        │ id (PK)     │
-│ tipo        │        │ nombre      │
-│ titulo      │        └─────────────┘
-│ descripcion │             │
-│ anio        │             │ producto_idioma
-│ alquiler_id │◄────────────┘ (ManyToMany)
-└──────┬──────┘
-       │
-       │ (ManyToOne - opcional)
-       │
-┌──────▼──────────┐
-│    Alquiler     │
-│─────────────────│
-│ id (PK)         │
-│ fecha_inicio    │
-│ fecha_fin       │◄─────── Calculado automáticamente
-│ suscriptor_id   │         según plan del suscriptor
-└──────┬──────────┘
-       │
-       │ (ManyToOne)
-       │
-┌──────▼───────────┐
-│   Suscriptor     │
-│──────────────────│
-│ id (PK)          │
-│ email            │
-│ contrasenia      │
-│ plan_contratado  │ ──► BASICO (14 días) / PREMIUM (28 días)
-└──────────────────┘
-
-
-
 ## Endpoints PRINCIPALES de la API REST
 
 ### Base URL: `http://localhost:8080/api`
 
 ###  Categorías (`/api/categorias`)
 
-|-------------------------------------------------|
 | Método | Endpoint             |  Descripción    |
 |--------|----------------------|-----------------|
 | `GET` | `/categorias`         | Listar todas    |
 | `GET` | `/categorias/{id}`    | Obtener por ID  |
 | `POST` | `/categorias`        | Crear           |
 | `DELETE` | `/categorias/{id}` | Eliminar        |
-|-------------------------------------------------|
 
 ### Idiomas (`/api/idiomas`)
-|----------------------------------------------|
+
 | Método | Endpoint           | Descripción    |
 |-------|---------------------|----------------|
 | `GET` | `/idiomas`          | Listar todos   |
 | `GET` | `/idiomas/{id}`     | Obtener por ID |
 | `POST` | `/idiomas`         | Crear          |
 | `DELETE` | `/idiomas/{id}`  | Eliminar       |
-|----------------------------------------------|
 
 ### Suscriptores (`/api/suscriptores`)
 
-|-------------------------------------------------------|
 | Método | Endpoint               | Descripción         |
 |--------|------------------------|---------------------|
 | `GET` | `/suscriptores`         | Listar todos        | 
@@ -89,13 +38,11 @@ El sistema implementa una arquitectura en capas con API REST, validaciones de ne
 | `POST` | `/suscriptores`        | Crear               |
 | `PUT` | `/suscriptores/{id}`    | Actualizar          |
 | `DELETE` | `/suscriptores/{id}` | Eliminar            |
-|-------------------------------------------------------|
 
 
 
 ### Productos (`/api/productos`)
 
-|-----------------------------------------------|
 | Método | Endpoint            | Descripción    | 
 |--------|---------------------|----------------|
 | `GET` | `/productos`         | Listar todos   |
@@ -103,11 +50,10 @@ El sistema implementa una arquitectura en capas con API REST, validaciones de ne
 | `POST` | `/productos`        | Crear          |
 | `PUT` | `/productos/{id}`    | Actualizar     |
 | `DELETE` | `/productos/{id}` | Eliminar       |
-|-----------------------------------------------|
 
 
 ### Alquileres (`/api/alquileres`)
-|------------------------------------------------|
+
 | Método | Endpoint             | Descripción    |
 |--------|----------------------|----------------|
 | `GET` | `/alquileres`         | Listar todos   |
@@ -115,7 +61,6 @@ El sistema implementa una arquitectura en capas con API REST, validaciones de ne
 | `POST` | `/alquileres`        | Crear          |
 | `PUT` | `/alquileres/{id}`    | Actualizar     |
 | `DELETE` | `/alquileres/{id}` | Eliminar       |
-|------------------------------------------------|
 
 
 ---
@@ -136,12 +81,10 @@ public void calcularFechaFin() {
 }
 ```
 
-|---------------------------------|
 | Plan    | Duración del Alquiler |
 |---------|-----------------------|
 | BÁSICO  | 14 días (2 semanas)   |
 | PREMIUM | 28 días (4 semanas)   |
-|---------------------------------|
 
 ### 2. Validaciones de Negocio
 
