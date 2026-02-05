@@ -7,6 +7,49 @@ El sistema implementa una arquitectura en capas con API REST, validaciones de ne
 
 ---
 
+## Diagrama Entidad-Relación
+
+┌─────────────────┐
+│   Categoria     │
+│                 │
+└────────┬────────┘
+         │
+         │ *
+         │
+         │ ManyToMany
+         │
+         │ *
+         ├─────────────────┐
+         │                 │
+┌────────┴────────┐   ┌────┴────────┐
+│     Idioma      │   │  Producto   │
+│                 │   │             │
+└─────────────────┘   └──────┬──────┘
+                             │
+                             │ *
+                             │
+                             │ ManyToOne
+                             │ (opcional)
+                             │
+                             │ 0..1
+                             ▼
+                      ┌──────────────┐
+                      │   Alquiler   │
+                      │              │
+                      └──────┬───────┘
+                             ▲
+                             │ *
+                             │
+                             │ ManyToOne
+                             │
+                             │ 1
+                      ┌──────┴───────┐
+                      │  Suscriptor  │
+                      │              │
+                      └──────────────┘
+
+---
+
 ## Endpoints PRINCIPALES de la API REST
 
 ### Base URL: `http://localhost:8080/api`
