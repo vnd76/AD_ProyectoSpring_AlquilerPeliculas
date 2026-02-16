@@ -1,17 +1,11 @@
 package com.sqt.ad_proyectospring_alquilerpeliculas.controller;
 
-/*
- * Controller REST para gestionar alquileres
- *
- * @RestController: Combina @Controller + @ResponseBody
- *                  Todas las respuestas se convierten automáticamente a JSON
- * @RequestMapping: Prefijo de todas las rutas (/api/alquileres)
- * @RequiredArgsConstructor: Lombok inyecta las dependencias automáticamente
- */
 import com.sqt.ad_proyectospring_alquilerpeliculas.dto.request.AlquilerDTO;
 import com.sqt.ad_proyectospring_alquilerpeliculas.dto.response.AlquilerDetalleDTO;
+import com.sqt.ad_proyectospring_alquilerpeliculas.entity.Suscriptor;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +21,16 @@ import java.util.List;
 public class AlquilerController {
 
    private final AlquilerService alquilerService;
+
+   // ========== GET QUERY /api/alquileres/activos/plan/{plan} ==========
+   @GetMapping("/activos/plan/{plan}")
+   public ResponseEntity<Page<AlquilerDetalleDTO>> obtenerAlquileresActivosPorPlan(
+           @PathVariable Suscriptor.PlanContratado plan,
+           @PageableDefault(size = 10, sort = "fechaInicio") Pageable pageable) {
+
+       Page<AlquilerDetalleDTO> alquileres = alquilerService.buscarAlquileresActivosPorPlan(plan, pageable);
+       return ResponseEntity.ok(alquileres);
+   }
 
     // ========== GET /api/alquileres ==========
     @GetMapping

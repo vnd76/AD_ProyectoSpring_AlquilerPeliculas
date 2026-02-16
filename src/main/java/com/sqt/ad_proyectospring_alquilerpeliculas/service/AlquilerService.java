@@ -11,6 +11,8 @@ import com.sqt.ad_proyectospring_alquilerpeliculas.repository.AlquilerRepository
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,6 +29,18 @@ public class AlquilerService {
     private final AlquilerRepository alquilerRepository;
     private final AlquilerMapper alquilerMapper;
     private final SuscriptorRepository suscriptorRepository;
+
+    // ========== BUSCAR ALQUILERES ACTIVOS POR PLAN ==========
+    public Page<AlquilerDetalleDTO> buscarAlquileresActivosPorPlan(
+            Suscriptor.PlanContratado plan,
+            Pageable pageable) {
+
+        log.info("Buscando alquileres activos para el plan: {}", plan);
+
+        Page<Alquiler> alquileres = alquilerRepository.findAlquileresActivosPorPlan(plan, pageable);
+
+        return alquileres.map(alquilerMapper::toDetalleDTO);
+    }
 
     // ========== LISTAR TODOS ==========
     public List<AlquilerDetalleDTO> listarTodos(){
