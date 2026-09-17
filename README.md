@@ -241,6 +241,6 @@ https://youtu.be/eKGmRkYIQOI
 
 Autor
 
-**Victoria Nabou Diagne Briñas** para la asignatura de: **ACCESO A DATOS**
+**Victoria D.B.** para la asignatura de: **ACCESO A DATOS**
 
 ---
